@@ -2,11 +2,14 @@
 #include "../Library/GameObject.h"
 #include "Input.h"
 #include "Fighter.h"
+#include "Axis.h"
+#include "Camera.h"
 
 PlayScene::PlayScene()
 {
-	SetCameraPositionAndTarget_UpVecY(VGet(0,0,-300), VGet(0,0,0));
 	new Fighter();
+	new Axis();
+	new Camera();
 }
 
 PlayScene::~PlayScene()

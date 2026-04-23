@@ -55,6 +55,12 @@
       <Filter>PlayScene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Object3D.cpp" />
+    <ClCompile Include="Source\Axis.cpp">
+      <Filter>PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Screen.h" />
@@ -122,6 +128,12 @@
     </ClInclude>
     <ClInclude Include="Source\myDxLib.h" />
     <ClInclude Include="Source\Object3D.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Axis.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
       <Filter>PlayScene</Filter>
     </ClInclude>
   </ItemGroup>

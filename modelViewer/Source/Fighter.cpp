@@ -1,5 +1,6 @@
 #include "Fighter.h"
 #include <assert.h>
+#include "../ImGui/imgui.h"
 
 Fighter::Fighter()
 {
@@ -17,5 +18,33 @@ Fighter::~Fighter()
 
 void Fighter::Update()
 {
-	transform.position += velocity / 2.0f;
+	// Fighterを回す
+	// A-D W-S Q-E
+	if (CheckHitKey(KEY_INPUT_A)) {
+		transform.rotation.y -= 3.0f * DegToRad;
+	}
+	if (CheckHitKey(KEY_INPUT_D)) {
+		transform.rotation.y += 3.0f * DegToRad;
+	}
+	if (CheckHitKey(KEY_INPUT_W)) {
+		transform.rotation.x += 3.0f * DegToRad;
+	}
+	if (CheckHitKey(KEY_INPUT_S)) {
+		transform.rotation.x -= 3.0f * DegToRad;
+	}
+	if (CheckHitKey(KEY_INPUT_Q)) {
+		transform.rotation.z += 3.0f * DegToRad;
+	}
+	if (CheckHitKey(KEY_INPUT_E)) {
+		transform.rotation.z -= 3.0f * DegToRad;
+	}
+	// 向いている方に進ませる
+	transform.position += transform.Forward() * 3.0f;
+
+	ImGui::Begin("Fighter");
+	int deg = transform.rotation.y * RedToDeg;
+	ImGui::InputInt("roty", &deg);
+	bool f;
+	ImGui::Checkbox("F", &f);
+	ImGui::End();
 }
