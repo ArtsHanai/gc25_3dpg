@@ -35,6 +35,7 @@ public:
 	Object3D();
 	virtual ~Object3D();
 	virtual void Draw() override;
+	const Transform& GetTransform() { return transform; }
 protected:
 	int hModel;
 	Transform transform;

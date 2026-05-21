@@ -11,6 +11,9 @@ TitleScene::~TitleScene()
 
 void TitleScene::Update()
 {
+	DrawFormatString(200, 10, GetColor(255,255,255),
+		"%f", Time::DeltaTime());
+
 	if (Input::IsKeyOnTrig(KEY_INPUT_P)) {
 		SceneManager::ChangeScene("PLAY");
 	}

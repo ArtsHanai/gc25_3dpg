@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Stage.h"
+#include "Coin.h"
 
 Player::Player(const VECTOR3& pos)
 {
@@ -13,6 +14,8 @@ Player::Player(const VECTOR3& pos)
 	hAnim = MV1LoadModel("data/models/Anim_Run.mv1");
 	attID = MV1AttachAnim(hModel, 0, hAnim);
 	time = 0;
+
+	movable = false;
 }
 
 Player::~Player()
@@ -21,6 +24,9 @@ Player::~Player()
 
 void Player::Update()
 {
+	if (movable == false)
+		return;
+
 	// アニメーションの実験
 	MV1SetAttachAnimTime(hModel, attID, time);
 	time += 0.5;
@@ -38,15 +44,27 @@ void Player::Update()
 	}
 	if (CheckHitKey(KEY_INPUT_W)) {
 		// 前に移動
-		transform.position += transform.Forward() * 2.0f;
+		transform.position += transform.Forward() 
+									* 200.0f * Time::DeltaTime();
 	}
 	Stage* st = FindGameObject<Stage>();
 	transform.position += st->CollideSphere(
 					transform.position+VECTOR3(0,50,0), 50);
 
+	// コインを取得
+	std::list<Coin*> coins = FindGameObjects<Coin>();
+	//for (std::list<Coin*>::iterator itr = coins.begin();
+	//								itr != coins.end(); itr++) {
+	//	Coin* c = *itr;
+	//	c->CollidePlayer(transform.position+VECTOR3(0,50,0), 50);
+	//}
+	for (Coin* c : coins) {
+		c->CollidePlayer(transform.position + VECTOR3(0, 50, 0), 150);
+	}
+
 //	float rotY = transform.rotation.y;
 //	VECTOR3 camPos = VECTOR3(0, 0, -200)*MGetRotY(rotY)+transform.position;
 	VECTOR3 camPos = transform.Forward() * -200 +
-						transform.position + VECTOR3(0,200,0);;
+						transform.position + VECTOR3(0,200,0);
 	SetCameraPositionAndTarget_UpVecY(camPos, transform.position+VECTOR3(0,150, 0));
 }

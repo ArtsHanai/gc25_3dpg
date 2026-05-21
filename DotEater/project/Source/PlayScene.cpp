@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Stage.h"
 #include "Axis.h"
+#include "ReadyGo.h"
 
 PlayScene::PlayScene()
 {
@@ -10,6 +11,7 @@ PlayScene::PlayScene()
 		VECTOR3(0,1000, -100), VECTOR3(0, 0, 0));
 	new Stage();
 	new Axis();
+	new ReadyGo();
 }
 
 PlayScene::~PlayScene()

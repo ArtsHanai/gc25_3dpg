@@ -7,9 +7,11 @@ public:
 	Player(const VECTOR3& pos);
 	~Player();
 	void Update() override;
+	void AllowMove(bool move = true) { movable = move; }
 private:
 	// アニメーションの実験
 	int hAnim; // アニメーションデータのハンドラー
 	int attID; // アタッチした番号
 	float time;
+	bool movable;
 };
