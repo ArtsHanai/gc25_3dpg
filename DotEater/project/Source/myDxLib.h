@@ -1,6 +1,12 @@
 #pragma once
 #include <DxLib.h>
 
+// •âŠÔŠÖ”
+template <typename T>
+T Lerp(T start, T end, float rate) {
+	return (end - start) * rate + start;
+}
+
 class VECTOR3 : public VECTOR
 {
 public:

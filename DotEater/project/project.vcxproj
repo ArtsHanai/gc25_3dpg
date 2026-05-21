@@ -153,6 +153,7 @@
     <ClInclude Include="Library\Time.h" />
     <ClInclude Include="Source\Axis.h" />
     <ClInclude Include="Source\BootScene.h" />
+    <ClInclude Include="Source\Coin.h" />
     <ClInclude Include="Source\csvReader.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\myDxLib.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="Library\Time.cpp" />
     <ClCompile Include="Source\Axis.cpp" />
     <ClCompile Include="Source\BootScene.cpp" />
+    <ClCompile Include="Source\Coin.cpp" />
     <ClCompile Include="Source\csvReader.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Object3D.cpp" />

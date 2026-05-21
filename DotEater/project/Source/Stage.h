@@ -8,4 +8,6 @@ public:
 	Stage();
 	~Stage();
 	void Draw() override;
+
+	VECTOR3 CollideSphere(VECTOR3 center, float rad);
 };

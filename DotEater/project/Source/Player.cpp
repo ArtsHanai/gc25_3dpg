@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Stage.h"
 
 Player::Player(const VECTOR3& pos)
 {
@@ -39,6 +40,10 @@ void Player::Update()
 		// ‘O‚ÉˆÚ“®
 		transform.position += transform.Forward() * 2.0f;
 	}
+	Stage* st = FindGameObject<Stage>();
+	transform.position += st->CollideSphere(
+					transform.position+VECTOR3(0,50,0), 50);
+
 //	float rotY = transform.rotation.y;
 //	VECTOR3 camPos = VECTOR3(0, 0, -200)*MGetRotY(rotY)+transform.position;
 	VECTOR3 camPos = transform.Forward() * -200 +
