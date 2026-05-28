@@ -7,7 +7,7 @@ ReadyGo::ReadyGo()
 	hReady = LoadGraph("data/images/ready.png");
 	hGo = LoadGraph("data/images/go.png");
 	timer = 2.0f; // Ready‚Ì•\Ž¦ŽžŠÔi•bj
-	SoundDriver::Load("data/sounds/go.mp3");
+	SoundDriver::Load("data/tmpSound/go");
 }
 
 ReadyGo::~ReadyGo()
@@ -21,7 +21,7 @@ void ReadyGo::Update()
 	if (t >= 0.0f && timer < 0.0f) {
 		Player* p = FindGameObject<Player>();
 		p->AllowMove();
-		SoundDriver::Play("data/sounds/go.mp3");
+		SoundDriver::Play("go");
 	}
 	if (timer < -0.5f) {
 		DestroyMe();
