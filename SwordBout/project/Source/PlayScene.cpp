@@ -4,12 +4,14 @@
 #include "Player.h"
 #include "Stage.h"
 #include "Camera.h"
+#include "Pad.h"
 
 PlayScene::PlayScene()
 {
 	new Player();
 	new Stage();
 	new Camera();
+	new Pad();
 }
 
 PlayScene::~PlayScene()

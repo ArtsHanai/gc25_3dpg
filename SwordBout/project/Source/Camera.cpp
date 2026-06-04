@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "Player.h"
+#include "Pad.h"
 
 Camera::Camera()
 {
@@ -12,7 +13,11 @@ Camera::~Camera()
 
 void Camera::Update()
 {
+	Pad* pad = FindGameObject<Pad>();
 	VECTOR3& rot = transform.rotation;
+	// 右スティックの値を返してもらって、カメラを動かす
+	float stickX = pad->GetRStickX();
+
 	if (CheckHitKey(KEY_INPUT_RIGHT)) {
 		rot.y += 180.0f * Time::DeltaTime() * DegToRad;
 	}
@@ -39,10 +44,10 @@ void Camera::Draw()
 {
 	Player* p = FindGameObject<Player>();
 	VECTOR3 playerPos = p->GetTransform().position;
+	VECTOR3 center = playerPos + VECTOR3(0,150,0);
+	MATRIX mat = MGetRotX(transform.rotation.x)
+				* MGetRotY(transform.rotation.y);
+	VECTOR3 camPos = VECTOR3(0, 0, -330) * mat + center;
 
-	VECTOR3 camPos = VECTOR3(0, 0, -330) 
-							* MGetRotX(transform.rotation.x)
-							* MGetRotY(transform.rotation.y)
-					+ playerPos + VECTOR3(0,150,0);
 	SetCameraPositionAndTarget_UpVecY(camPos, playerPos + VECTOR3(0, 200, 0));
 }
