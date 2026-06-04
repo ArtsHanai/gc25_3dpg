@@ -17,6 +17,7 @@ void Camera::Update()
 	VECTOR3& rot = transform.rotation;
 	// 右スティックの値を返してもらって、カメラを動かす
 	float stickX = pad->GetRStickX();
+	rot.y += stickX * 180.0f * Time::DeltaTime() * DegToRad;
 
 	if (CheckHitKey(KEY_INPUT_RIGHT)) {
 		rot.y += 180.0f * Time::DeltaTime() * DegToRad;
