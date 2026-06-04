@@ -18,27 +18,12 @@ void Camera::Update()
 	// 右スティックの値を返してもらって、カメラを動かす
 	float stickX = pad->GetRStickX();
 	rot.y += stickX * 180.0f * Time::DeltaTime() * DegToRad;
-
-	if (CheckHitKey(KEY_INPUT_RIGHT)) {
-		rot.y += 180.0f * Time::DeltaTime() * DegToRad;
-	}
-	if (CheckHitKey(KEY_INPUT_LEFT)) {
-		rot.y -= 180.0f * Time::DeltaTime() * DegToRad;
-	}
-	if (CheckHitKey(KEY_INPUT_UP)) {
-		rot.x += 180.0f * Time::DeltaTime() * DegToRad;
-		static const float UpLimit = 89.0f * DegToRad;
-		if (rot.x >= UpLimit) {
-			rot.x = UpLimit;
-		}
-	}
-	if (CheckHitKey(KEY_INPUT_DOWN)) {
-		rot.x -= 180.0f * Time::DeltaTime() * DegToRad;
-		static const float DownLimit = -45.0f * DegToRad;
-		if (rot.x <= DownLimit) {
-			rot.x = DownLimit;
-		}
-	}
+	float stickY = pad->GetRStickY();
+	rot.x += stickY * 180.0f * Time::DeltaTime() * DegToRad;
+	static const float UpLimit = 89.0f * DegToRad;
+	static const float DownLimit = -45.0f * DegToRad;
+	rot.x = min(rot.x, UpLimit);
+	rot.x = max(rot.x, DownLimit);
 }
 
 void Camera::Draw()

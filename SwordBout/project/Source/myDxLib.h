@@ -50,7 +50,7 @@ public:
 };
 
 const float DegToRad = DX_PI_F / 180.0f;
-const float RedToDeg = 180.0f / DX_PI_F;
+const float RadToDeg = 180.0f / DX_PI_F;
 
 inline MATRIX operator *(const MATRIX& m1, const MATRIX& m2)
 {
