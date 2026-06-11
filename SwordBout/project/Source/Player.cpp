@@ -12,14 +12,26 @@ Player::Player(VECTOR3 pos, float rotY)
 //	MV1SetFrameUserLocalMatrix(hModel, 15, MGetRotY(DX_PI_F));
 	int root = MV1SearchFrame(hModel, "root");
 	MV1SetFrameUserLocalMatrix(hModel, root, MGetRotY(DX_PI_F));
+
+	anim = new Animator(hModel);
+	anim->AddFile(0, "data/models/Character/Player/Anim_Neutral.mv1", true);
+	anim->AddFile(1, "data/models/Character/Player/Anim_Run.mv1", true);
+	anim->AddFile(2, "data/models/Character/Player/Anim_Attack1.mv1", false);
+	anim->AddFile(3, "data/models/Character/Player/Anim_Attack2.mv1", false);
+	anim->AddFile(4, "data/models/Character/Player/Anim_Attack3.mv1", false);
+	anim->Play(0);
+
+	hWeapon = MV1LoadModel("data/models/Character/Weapon/Sabel/Sabel.mv1");
 }
 
 Player::~Player()
 {
+	delete anim;
 }
 
 void Player::Update()
 {
+	anim->Update();
 	Camera* cam = FindGameObject<Camera>();
 	VECTOR3 camRot = cam->GetTransform().rotation;
 	float myRot = transform.rotation.y;
@@ -43,6 +55,9 @@ void Player::Update()
 					transform.rotation.y -= 10.0f * DegToRad;
 				}
 			}
+			anim->Play(1);
+		} else {
+			anim->Play(0);
 		}
 	}
 
@@ -53,4 +68,13 @@ void Player::Update()
 		transform.position + VECTOR3(0, -200, 0), &hitPos)) {
 		transform.position = hitPos;
 	}
+}
+
+void Player::Draw()
+{
+	Object3D::Draw();
+	int wp = MV1SearchFrame(hModel, "wp");
+	MATRIX mat = MV1GetFrameLocalWorldMatrix(hModel, wp);
+	MV1SetMatrix(hWeapon, mat);
+	MV1DrawModel(hWeapon);
 }

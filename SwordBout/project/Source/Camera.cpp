@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Player.h"
 #include "Pad.h"
+#include "Stage.h"
 
 Camera::Camera()
 {
@@ -34,6 +35,12 @@ void Camera::Draw()
 	MATRIX mat = MGetRotX(transform.rotation.x)
 				* MGetRotY(transform.rotation.y);
 	VECTOR3 camPos = VECTOR3(0, 0, -330) * mat + center;
+
+	Stage* st = FindGameObject<Stage>();
+	VECTOR3 hitPos;
+	if (st->FindGround( center, camPos, &hitPos)) {
+		camPos = hitPos;
+	}
 
 	SetCameraPositionAndTarget_UpVecY(camPos, playerPos + VECTOR3(0, 200, 0));
 }

@@ -17,12 +17,27 @@ void Pad::Update()
 	GetJoypadXInputState(DX_INPUT_PAD1, &state);
 	if (CheckHitKey(KEY_INPUT_RIGHT)) {
 		state.ThumbRX = 32767;
-		if (CheckHitKey(KEY_INPUT_RSHIFT)) {
-			state.ThumbRX /= 2;
-		}
 	}
 	if (CheckHitKey(KEY_INPUT_LEFT)) {
 		state.ThumbRX = -32768;
+	}
+	if (CheckHitKey(KEY_INPUT_UP)) {
+		state.ThumbRY = 32767;
+	}
+	if (CheckHitKey(KEY_INPUT_DOWN)) {
+		state.ThumbRY = -32768;
+	}
+	if (CheckHitKey(KEY_INPUT_D)) {
+		state.ThumbLX = 32767;
+	}
+	if (CheckHitKey(KEY_INPUT_A)) {
+		state.ThumbLX = -32768;
+	}
+	if (CheckHitKey(KEY_INPUT_W)) {
+		state.ThumbLY = 32767;
+	}
+	if (CheckHitKey(KEY_INPUT_S)) {
+		state.ThumbLY = -32768;
 	}
 }
 
