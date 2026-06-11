@@ -1,6 +1,17 @@
 #pragma once
 #include <DxLib.h>
 
+class VECTOR2
+{
+public:
+	float x, y;
+	VECTOR2() : VECTOR2(0, 0) {}
+	VECTOR2(float _x, float _y) {
+		x = _x;
+		y = _y;
+	}
+};
+
 class VECTOR3 : public VECTOR
 {
 public:

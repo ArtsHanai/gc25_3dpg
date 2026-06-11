@@ -1,9 +1,13 @@
 #include "Player.h"
 #include "Camera.h"
 #include "Pad.h"
+#include "Stage.h"
 
-Player::Player()
+Player::Player(VECTOR3 pos, float rotY)
 {
+	transform.position = pos;
+	transform.rotation.y = rotY;
+
 	hModel = MV1LoadModel("data/models/Character/Player/PC.mv1");
 //	MV1SetFrameUserLocalMatrix(hModel, 15, MGetRotY(DX_PI_F));
 	int root = MV1SearchFrame(hModel, "root");
@@ -20,7 +24,8 @@ void Player::Update()
 	VECTOR3 camRot = cam->GetTransform().rotation;
 	float myRot = transform.rotation.y;
 	if (true) {
-		VECTOR3 in = VECTOR3(Pad::GetLStickX(), 0, Pad::GetLStickY());	
+		VECTOR2 stick = Pad::GetLStick();
+		VECTOR3 in = VECTOR3(stick.x, 0, stick.y);	
 		if (VSize(in) > 1.0f) {
 			in = VNorm(in);
 		}
@@ -39,5 +44,13 @@ void Player::Update()
 				}
 			}
 		}
+	}
+
+	// ínñ Ç…ê⁄ín
+	Stage* st = FindGameObject<Stage>();
+	VECTOR3 hitPos;
+	if (st->FindGround(transform.position + VECTOR3(0, 200, 0),
+		transform.position + VECTOR3(0, -200, 0), &hitPos)) {
+		transform.position = hitPos;
 	}
 }

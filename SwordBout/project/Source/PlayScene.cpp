@@ -8,7 +8,7 @@
 
 PlayScene::PlayScene()
 {
-	new Player();
+	new Player(VECTOR3(0,0,0), 0);
 	new Stage();
 	new Camera();
 	new Pad();

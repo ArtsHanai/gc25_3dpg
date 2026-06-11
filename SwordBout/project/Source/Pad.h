@@ -40,6 +40,7 @@ public:
 	static float GetRStickY(); // -1.0`+1.0‚ğ•Ô‚·
 	static float GetLStickX(); // -1.0`+1.0‚ğ•Ô‚·
 	static float GetLStickY(); // -1.0`+1.0‚ğ•Ô‚·
+	static VECTOR2 GetLStick(); 
 private:
 };
 #endif

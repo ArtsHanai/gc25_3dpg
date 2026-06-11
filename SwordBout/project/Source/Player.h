@@ -3,7 +3,7 @@
 
 class Player : public Object3D {
 public:
-	Player();
+	Player(VECTOR3 pos, float rotY);
 	~Player();
 	void Update() override;
 };

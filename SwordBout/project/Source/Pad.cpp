@@ -61,3 +61,13 @@ float Pad::GetLStickY()
 {
 	return StickValue(state.ThumbLY);
 }
+
+VECTOR2 Pad::GetLStick()
+{
+	float x = state.ThumbLX / 32767.0f;
+	float y = state.ThumbLY / 32767.0f;
+	if (x * x + y * y < 0.2f * 0.2f) { // ƒxƒNƒgƒ‹‚Ì’·‚³‚ª¬‚³‚¢
+		return VECTOR2();
+	}
+	return VECTOR2(x, y);
+}
