@@ -40,7 +40,11 @@ public:
 	static float GetRStickY(); // -1.0`+1.0‚ğ•Ô‚·
 	static float GetLStickX(); // -1.0`+1.0‚ğ•Ô‚·
 	static float GetLStickY(); // -1.0`+1.0‚ğ•Ô‚·
-	static VECTOR2 GetLStick(); 
+	static VECTOR2 GetLStick();
+	static bool IsPress(int key); // ‰Ÿ‚µ‚Ä‚¢‚é‚©
+	static bool OnPush(int key); // ‰Ÿ‚µ‚½uŠÔ
+
+	static const int ATTACK = XINPUT_BUTTON_A;
 private:
 };
 #endif

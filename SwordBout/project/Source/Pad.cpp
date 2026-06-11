@@ -2,6 +2,7 @@
 
 namespace { // 無名namespace このcppからしか見れない
 	XINPUT_STATE state;
+	XINPUT_STATE prevState; // 1フレーム前のstate
 };
 
 Pad::Pad()
@@ -14,7 +15,9 @@ Pad::~Pad()
 
 void Pad::Update()
 {
+	prevState = state;
 	GetJoypadXInputState(DX_INPUT_PAD1, &state);
+
 	if (CheckHitKey(KEY_INPUT_RIGHT)) {
 		state.ThumbRX = 32767;
 	}
@@ -85,4 +88,21 @@ VECTOR2 Pad::GetLStick()
 		return VECTOR2();
 	}
 	return VECTOR2(x, y);
+}
+
+bool Pad::IsPress(int key)
+{
+	return state.Buttons[key] != 0;
+}
+
+bool Pad::OnPush(int key)
+{
+	// prevStateでは０で、
+	// stateでは１になっていれば押した瞬間：trueを返す
+	if (prevState.Buttons[key] == 0) {
+		if (state.Buttons[key] != 0) {
+			return true;
+		}
+	}
+	return false;
 }
