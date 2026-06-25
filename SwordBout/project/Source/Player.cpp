@@ -3,14 +3,11 @@
 #include "Pad.h"
 #include "Stage.h"
 #include <assert.h>
+#include "IEnemy.h"
 
-Player::Player(VECTOR3 pos, float rotY)
+Player::Player(VECTOR3 pos, float rotY) : Actor(pos, rotY)
 {
-	transform.position = pos;
-	transform.rotation.y = rotY;
-
 	hModel = MV1LoadModel("data/models/Character/Player/PC.mv1");
-//	MV1SetFrameUserLocalMatrix(hModel, 15, MGetRotY(DX_PI_F));
 	int root = MV1SearchFrame(hModel, "root");
 	MV1SetFrameUserLocalMatrix(hModel, root, MGetRotY(DX_PI_F));
 
@@ -30,6 +27,7 @@ Player::Player(VECTOR3 pos, float rotY)
 Player::~Player()
 {
 	delete anim;
+	anim = nullptr;
 }
 
 void Player::Update()
@@ -104,6 +102,18 @@ void Player::UpdateNormal()
 void Player::UpdateAttack1()
 {
 	anim->Play(2);
+	float frame = anim->GetCurrentFrame();
+	if (frame >= 3.5f && frame <= 8.5) {
+		int wp = MV1SearchFrame(hModel, "wp");
+		MATRIX mat = MV1GetFrameLocalWorldMatrix(hModel, wp);
+		VECTOR3 top = VECTOR3(0,-100,0) * mat;
+		VECTOR3 btm = VECTOR3(0,0,0) * mat;
+		std::list<IEnemy*> enemies = FindGameObjects<IEnemy>();
+		for (IEnemy* e : enemies) {
+			e->CollideWeapon(this, btm, top);
+		}
+	}
+
 	if (anim->IsFinish()) {
 		state = State::sNormal;
 	} else if (anim->GetCurrentFrame() <= 8.5f) {

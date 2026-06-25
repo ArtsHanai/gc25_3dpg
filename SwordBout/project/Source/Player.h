@@ -1,8 +1,8 @@
 #pragma once
-#include "Object3D.h"
+#include "Actor.h"
 #include "Animator.h"
 
-class Player : public Object3D {
+class Player : public Actor {
 public:
 	Player(VECTOR3 pos, float rotY);
 	~Player();
@@ -25,7 +25,5 @@ private:
 	void UpdateAttack2();
 	void UpdateAttack3();
 	void UpdateDamage();
-	Animator* anim;
-	int hWeapon;
 	bool attackPushed;
 };

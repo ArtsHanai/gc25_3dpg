@@ -72,7 +72,15 @@
     <ClCompile Include="Source\Animator.cpp">
       <Filter>PlayScene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Goblin.cpp" />
+    <ClCompile Include="Source\Goblin.cpp">
+      <Filter>PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Golem.cpp">
+      <Filter>PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\IEnemy.cpp">
+      <Filter>PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Screen.h" />
@@ -160,6 +168,15 @@
       <Filter>PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Goblin.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Golem.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\IEnemy.h">
       <Filter>PlayScene</Filter>
     </ClInclude>
   </ItemGroup>

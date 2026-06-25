@@ -5,6 +5,8 @@
 #include "Stage.h"
 #include "Camera.h"
 #include "Pad.h"
+#include "Goblin.h"
+#include "Golem.h"
 
 PlayScene::PlayScene()
 {
@@ -12,6 +14,9 @@ PlayScene::PlayScene()
 	new Stage();
 	new Camera();
 	new Pad();
+	new Goblin(VECTOR3(0, 100, 300), 0);
+	new Goblin(VECTOR3(-200, 100, 300), 0);
+	new Golem(VECTOR3(200, 0, 300), 0);
 }
 
 PlayScene::~PlayScene()
