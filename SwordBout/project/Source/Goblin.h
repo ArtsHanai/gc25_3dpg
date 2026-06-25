@@ -31,4 +31,6 @@ private:
 	void UpdateDamage();
 	void UpdateBlow();
 	int blowAnim;
+
+	VECTOR3 velocity; // ˆÚ“®ƒxƒNƒgƒ‹
 };

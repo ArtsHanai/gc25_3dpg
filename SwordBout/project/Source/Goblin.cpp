@@ -1,5 +1,10 @@
 #include "Goblin.h"
 #include <assert.h>
+#include "Stage.h"
+
+static const float BlowHigh = 200.0f;
+static const float BlowFar = 300.0f;
+static const float BlowG = 0.5f;
 
 Goblin::Goblin(VECTOR3 pos, float rotY) : IEnemy(pos, rotY)
 {
@@ -41,6 +46,11 @@ void Goblin::Update()
 
 void Goblin::OnDamage(Actor* other)
 {
+	// プレイヤーの方を向く
+	VECTOR3 v = other->GetTransform().position;
+	v -= transform.position;
+	transform.rotation.y = atan2f(v.x, v.z);
+
 	if (hp > 0) {
 		hp--;
 		if (hp > 0) {
@@ -50,15 +60,25 @@ void Goblin::OnDamage(Actor* other)
 			anim->Play(aBlowIn);
 			state = sBlow;
 			blowAnim = 0;
-			// 吹き飛び死亡
+			float BlowV = sqrtf(2.0f * BlowG * BlowHigh);
+			float BlowH = BlowFar / (BlowV / BlowG) / 2.0f;
+			velocity = VNorm(v);
+			velocity *= -BlowH; // 水平方向の移動量
+			velocity.y = BlowV; // ジャンプの初速
 		}
 	}
+
 //	other->GetTransform()
 //	DestroyMe();
 }
 
 void Goblin::UpdateNormal()
 {
+	Stage* st = FindGameObject<Stage>();
+	VECTOR3 hit;
+	if (st->FindGround(transform.position + VECTOR3(0, 100, 0), transform.position + VECTOR3(0, -100, 0), &hit)) {
+		transform.position = hit;
+	}
 }
 
 void Goblin::UpdateDamage()
@@ -71,7 +91,21 @@ void Goblin::UpdateDamage()
 
 void Goblin::UpdateBlow()
 {
-	if (anim->IsFinish()) {
-		anim->Play(aBlowLoop);
+	if (blowAnim == 0) {
+		if (anim->IsFinish()) {
+			anim->Play(aBlowLoop);
+			blowAnim = 1;
+		}
+	}
+	if (blowAnim < 2) {
+		transform.position += velocity;
+		velocity.y -= BlowG;
+		Stage* st = FindGameObject<Stage>();
+		VECTOR3 hit;
+		if (st->FindGround(transform.position + VECTOR3(0, 100, 0), transform.position, &hit)) {
+			transform.position = hit;
+			anim->Play(aBlowOut);
+			blowAnim = 2;
+		}
 	}
 }
