@@ -1,6 +1,7 @@
 #include "Goblin.h"
 #include <assert.h>
 #include "Stage.h"
+#include "Player.h"
 
 static const float BlowHigh = 200.0f;
 static const float BlowFar = 300.0f;
@@ -24,6 +25,7 @@ Goblin::Goblin(VECTOR3 pos, float rotY) : IEnemy(pos, rotY)
 	anim->AddFile(aBlowLoop, "data/models/Character/Goblin/Anim_Blow_Loop.mv1", true);
 	anim->AddFile(aBlowOut, "data/models/Character/Goblin/Anim_Blow_Out.mv1", false);
 	anim->AddFile(aDown, "data/models/Character/Goblin/Anim_Down_Loop.mv1", false);
+	anim->AddFile(aAttack, "data/models/Character/Goblin/Anim_Attack1.mv1", false);
 	anim->Play(aNeutral);
 
 	hp = 5;
@@ -40,6 +42,7 @@ void Goblin::Update()
 	case sNormal: UpdateNormal(); break;
 	case sDamage: UpdateDamage(); break;
 	case sBlow: UpdateBlow(); break;
+	case sAttack: UpdateAttack(); break;
 	default: assert(false);
 	}
 }
@@ -63,8 +66,8 @@ void Goblin::OnDamage(Actor* other)
 			float BlowV = sqrtf(2.0f * BlowG * BlowHigh);
 			float BlowH = BlowFar / (BlowV / BlowG) / 2.0f;
 			velocity = VNorm(v);
-			velocity *= -BlowH; // 水平方向の移動量
-			velocity.y = BlowV; // ジャンプの初速
+			velocity *= -BlowH; // 水平方向の移動 
+			velocity.y = BlowV; // ジャンプの初速 
 		}
 	}
 
@@ -74,6 +77,10 @@ void Goblin::OnDamage(Actor* other)
 
 void Goblin::UpdateNormal()
 {
+	if (InSight(500.0f, 30.0f * DegToRad)) {
+		state = sAttack;
+		action = new ActionApproach(this);
+	}
 	Stage* st = FindGameObject<Stage>();
 	VECTOR3 hit;
 	if (st->FindGround(transform.position + VECTOR3(0, 100, 0), transform.position + VECTOR3(0, -100, 0), &hit)) {
@@ -108,4 +115,75 @@ void Goblin::UpdateBlow()
 			blowAnim = 2;
 		}
 	}
+}
+
+void Goblin::UpdateAttack()
+{
+	if (action != nullptr) {
+		if (action->Update()) {
+			if (action->ID() == "Approach") {
+				delete action;
+				action = new ActionAttack(this);
+			} else {
+				delete action;
+				action = new ActionApproach(this);
+			}
+		}
+	}
+	OutputDebugString(action->ID().c_str());
+	// 視野から外れたらNormalにする
+	if (!InSight(550.0f, 35.0f * DegToRad)) {
+		state = sNormal;
+	}
+}
+
+bool Goblin::InSight(float dist, float ang)
+{
+	// プレイヤーへのベクトルを作る
+	Player* player = FindGameObject<Player>();
+	VECTOR3 pPos = player->GetTransform().position;
+	VECTOR3 v = pPos - transform.position;
+	// その長さがdistよりも長ければreturn false;
+	if (VSize(v) > dist)
+		return false;
+	// 自分の視野角に入っていればreturn true;
+	v = VNorm(v);
+	if (VDot(transform.Forward(), v) > cosf(ang)) {
+		return true;
+	}
+	return false;
+}
+
+Goblin::ActionApproach::ActionApproach(Goblin* gob) : StateBase(gob)
+{
+}
+
+Goblin::ActionApproach::~ActionApproach()
+{
+}
+
+bool Goblin::ActionApproach::Update()
+{
+	// プレイヤーに近づく
+	// プレイヤーとの距離が１ｍ以内になったらtrue
+	owner->transform.position;
+	return false;
+}
+
+Goblin::ActionAttack::ActionAttack(Goblin* gob) : StateBase(gob)
+{
+	owner->anim->Play(Goblin::AnimID::aAttack);
+}
+
+Goblin::ActionAttack::~ActionAttack()
+{
+}
+
+bool Goblin::ActionAttack::Update()
+{
+	// 攻撃アクションが終わったらtrue
+	if (owner->anim->IsFinish()) {
+		return true;
+	}
+	return false;
 }
