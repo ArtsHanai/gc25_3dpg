@@ -27,6 +27,12 @@ public:
 	{
 		return VECTOR3(0, 1, 0) * RotMatrix();
 	}
+	// ‘Šè‚Æ‚Ì‹——£‚ğ‹‚ß‚é
+	float Distance(VECTOR3 pos)
+	{
+		VECTOR3 v = pos - position;
+		return VSize(v);
+	}
 };
 
 class Object3D : public GameObject

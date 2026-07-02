@@ -28,9 +28,9 @@ public:
 		x += v.x; y += v.y;	z += v.z;
 		return *this;
 	}
-	VECTOR3 operator -(const VECTOR3& v) {
-		return VECTOR3(x - v.x, y - v.y, z - v.z);
-	}
+//	VECTOR3 operator -(const VECTOR3& v) {
+//		return VECTOR3(x - v.x, y - v.y, z - v.z);
+//	}
 	VECTOR3& operator -=(const VECTOR3& v) {
 		x -= v.x; y -= v.y;	z -= v.z;
 		return *this;
@@ -59,6 +59,11 @@ public:
 		return VTransform(*this, m);
 	}
 };
+
+inline VECTOR3 operator -(const VECTOR3& p1, const VECTOR3& p2)
+{
+	return VSub(p1, p2);
+}
 
 const float DegToRad = DX_PI_F / 180.0f;
 const float RadToDeg = 180.0f / DX_PI_F;

@@ -29,6 +29,10 @@ Goblin::Goblin(VECTOR3 pos, float rotY) : IEnemy(pos, rotY)
 	anim->Play(aNeutral);
 
 	hp = 5;
+	territory.center = pos;
+	territory.range = 1000.0f; // cm
+	route.clear();
+	route.push_back(territory.center);
 }
 
 Goblin::~Goblin()
@@ -38,11 +42,17 @@ Goblin::~Goblin()
 void Goblin::Update()
 {
 	IEnemy::Update();
+	if (nextState != state) {
+		delete action;
+		action = nullptr;
+		state = nextState;
+	}
 	switch (state) {
 	case sNormal: UpdateNormal(); break;
 	case sDamage: UpdateDamage(); break;
 	case sBlow: UpdateBlow(); break;
 	case sAttack: UpdateAttack(); break;
+	case sLooking : UpdateLooking(); break;
 	default: assert(false);
 	}
 }
@@ -58,10 +68,10 @@ void Goblin::OnDamage(Actor* other)
 		hp--;
 		if (hp > 0) {
 			anim->Play(aDamage);
-			state = sDamage;
+			ChangeState(sDamage);
 		} else {
 			anim->Play(aBlowIn);
-			state = sBlow;
+			ChangeState(sDamage);
 			blowAnim = 0;
 			float BlowV = sqrtf(2.0f * BlowG * BlowHigh);
 			float BlowH = BlowFar / (BlowV / BlowG) / 2.0f;
@@ -75,11 +85,16 @@ void Goblin::OnDamage(Actor* other)
 //	DestroyMe();
 }
 
+void Goblin::SetRoute(std::vector<VECTOR3> points)
+{
+	route = points;
+	route.push_back(territory.center);
+}
+
 void Goblin::UpdateNormal()
 {
 	if (InSight(500.0f, 30.0f * DegToRad)) {
-		state = sAttack;
-		action = new ActionApproach(this);
+		ChangeState(sAttack);
 	}
 	Stage* st = FindGameObject<Stage>();
 	VECTOR3 hit;
@@ -91,7 +106,7 @@ void Goblin::UpdateNormal()
 void Goblin::UpdateDamage()
 {
 	if (anim->IsFinish()) {
-		state = sNormal;
+		ChangeState(sNormal);
 		anim->Play(aNeutral);
 	}
 }
@@ -119,6 +134,9 @@ void Goblin::UpdateBlow()
 
 void Goblin::UpdateAttack()
 {
+	if (action == nullptr) { // 初回だけ
+		action = new ActionApproach(this);
+	}
 	if (action != nullptr) {
 		if (action->Update()) {
 			if (action->ID() == "Approach") {
@@ -133,8 +151,24 @@ void Goblin::UpdateAttack()
 	OutputDebugString(action->ID().c_str());
 	// 視野から外れたらNormalにする
 	if (!InSight(550.0f, 35.0f * DegToRad)) {
-		state = sNormal;
+		ChangeState(sNormal);
 	}
+}
+
+void Goblin::UpdateLooking()
+{
+	VECTOR3 v = territory.center - transform.position;
+	if (VSize(v) < 100.0f) {
+		ChangeState(sNormal);
+	}
+	v = VNorm(v);
+	transform.position += v*100.0f * Time::DeltaTime();
+	transform.rotation.y = atan2(v.x, v.z);
+}
+
+void Goblin::ChangeState(State st)
+{
+	nextState = st;
 }
 
 bool Goblin::InSight(float dist, float ang)
@@ -165,9 +199,21 @@ Goblin::ActionApproach::~ActionApproach()
 bool Goblin::ActionApproach::Update()
 {
 	// プレイヤーに近づく
+	Player* p = FindGameObject<Player>();
+	VECTOR3 v = p->GetTransform().position - owner->transform.position;
+	v = VNorm(v);
+	owner->transform.position += v * 100.0f * Time::DeltaTime();
+	owner->transform.rotation.y = atan2(v.x, v.z);
+
+	// テリトリーの範囲をチェック
+	float d = owner->transform.Distance(owner->territory.center);
+	if (d >= owner->territory.range) {
+		owner->ChangeState(sLooking);
+		return false;
+	}
 	// プレイヤーとの距離が１ｍ以内になったらtrue
-	owner->transform.position;
-	return false;
+	float dist = owner->transform.Distance(p->GetTransform().position);
+	return (dist <= 100.0f);
 }
 
 Goblin::ActionAttack::ActionAttack(Goblin* gob) : StateBase(gob)

@@ -1,6 +1,7 @@
 #pragma once
 #include "IEnemy.h"
 #include "Animator.h"
+#include <vector>
 
 class Goblin : public IEnemy {
 public:
@@ -9,7 +10,11 @@ public:
 	void Update() override;
 //	void Draw() override;
 	void OnDamage(Actor* other) override;
+	void SetRoute(std::vector<VECTOR3> points);
 private:
+	std::vector<VECTOR3> route;
+	int routeIdx; // どの点を目指すか
+
 	enum AnimID {
 		aNeutral = 0,
 		aRun,
@@ -21,19 +26,29 @@ private:
 		aAttack = 20,
 	};
 	int hp;
+	struct Circle {
+		VECTOR3 center;
+		float range;
+	};
+	Circle territory;
 
 	enum State {
 		sNormal,
 		sDamage,
 		sBlow,
 		sAttack,
+		sLooking,
 	};
 	State state;
 	void UpdateNormal();
 	void UpdateDamage();
 	void UpdateBlow();
 	void UpdateAttack();
+	void UpdateLooking();
 	int blowAnim;
+
+	void ChangeState(State st);
+	State nextState;
 
 	VECTOR3 velocity; // 移動ベクトル
 
