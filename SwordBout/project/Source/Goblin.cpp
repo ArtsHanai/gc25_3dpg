@@ -93,6 +93,24 @@ void Goblin::SetRoute(std::vector<VECTOR3> points)
 
 void Goblin::UpdateNormal()
 {
+	VECTOR3 v = route[routeIdx] - transform.position;
+	v.y = 0; // 高さを無視
+	float lenMax = VSize(v); // 自分が移動するべき最大距離
+	float rate = 1.0f;
+	if (lenMax != 0) {
+		float lenMove = 100.0f / Time::DeltaTime(); // 自分が移動する距離
+		rate = lenMove / lenMax;
+		if (rate >= 1.0f)
+			rate = 1.0f;
+		transform.position = Lerp<VECTOR3>(transform.position,
+			route[routeIdx], rate);
+		transform.rotation.y = atan2(v.x, v.z);
+	}
+	if (rate >= 1.0f) {
+		routeIdx++;
+		if (routeIdx >= route.size())
+			routeIdx = 0;
+	}
 	if (InSight(500.0f, 30.0f * DegToRad)) {
 		ChangeState(sAttack);
 	}

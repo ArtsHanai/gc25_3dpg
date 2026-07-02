@@ -92,3 +92,8 @@ static unsigned int C_RED = GetColor(255, 0, 0);
 static unsigned int C_BLUE = GetColor(0, 255, 0);
 static unsigned int C_GREEN = GetColor(0, 0, 255);
 static const VECTOR3 V_ZERO = VECTOR3(0, 0, 0);
+
+template <typename T>
+T Lerp(const T& start, const T& end, float rate) {
+	return (end-start)*rate+start;
+}
