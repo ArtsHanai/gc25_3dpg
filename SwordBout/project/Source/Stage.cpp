@@ -1,9 +1,16 @@
 #include "Stage.h"
+#include "Player.h"
+#include "Goblin.h"
+#include "Golem.h"
+#include <fstream>
+#include <assert.h>
 
 Stage::Stage()
 {
 	hModel = MV1LoadModel("data/models/Stage/Stage00.mv1");
 	MV1SetupCollInfo(hModel);
+
+	ParamRead(0);
 }
 
 Stage::~Stage()
@@ -23,3 +30,61 @@ bool Stage::FindGround(VECTOR3 high, VECTOR3 low, VECTOR3* hit)
 	}
 	return false;
 }
+
+void Stage::ParamRead(int st)
+{
+	struct Header {
+		char chunk[4]; // "MAPD"
+		int CharaInfoNum; // キャラデータの数
+		int ObjectInfoNum; // オブジェクトデータの数
+		int EventInfoNum; // イベントデータの数
+		VECTOR PlayerPosition; // プレイヤー座標
+		float PlayerAngle; // プレイヤーのY軸回転
+		int RenderType; // レンダリング方法
+		int ClearCondition; // クリア条件
+		int killCharaNum; // 倒すべき敵の数
+		int killTargetChara; // 倒すべき敵の番号
+	};
+	struct CharaInfo {
+		int id; // 種類(1:Goblin, 2:Bee, 3:Golem, 4:RedGoblin
+		VECTOR position; // 座標
+		float angle; // Y軸回転
+	};
+	struct ObjectInfo {
+		int id; // 種類
+		VECTOR position; // 座標
+		VECTOR rotation; // 回転
+		VECTOR scale; // 拡縮
+	};
+	struct EventInfo {
+		int type; // 種類
+		VECTOR position; // 中心座標
+		VECTOR area; // 範囲
+		int bgm; // 曲番号
+		int objectNum; // オブジェクトの数
+		int object[8]; // オブジェクトの番号
+	};
+	std::ifstream ifs("data/models/Stage/Stage00.dat", std::ios::binary);
+	assert(ifs);
+	Header header;
+	ifs.read((char*)&header, sizeof(header));
+	assert(strncmp(header.chunk, "MAPD", 4) == 0);
+	new Player(header.PlayerPosition, header.PlayerAngle);
+	for (int i = 0; i < header.CharaInfoNum; i++) {
+		CharaInfo chr;
+		ifs.read((char*)&chr, sizeof(chr));
+		switch (chr.id) {
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+			new Goblin(chr.position, chr.angle);
+			break;
+		default:
+			assert(false);
+			break;
+		}
+	}
+	ifs.close();
+}
+

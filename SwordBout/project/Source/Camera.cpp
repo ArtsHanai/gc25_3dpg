@@ -42,5 +42,9 @@ void Camera::Draw()
 		camPos = hitPos;
 	}
 
-	SetCameraPositionAndTarget_UpVecY(camPos, playerPos + VECTOR3(0, 200, 0));
+	if (CheckHitKey(KEY_INPUT_P)) {
+		SetCameraPositionAndTarget_UpVecY(camPos+VECTOR3(0,6000,0), playerPos + VECTOR3(0, 200, 0));
+	} else {
+		SetCameraPositionAndTarget_UpVecY(camPos, playerPos + VECTOR3(0, 200, 0));
+	}
 }

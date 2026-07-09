@@ -10,19 +10,19 @@
 
 PlayScene::PlayScene()
 {
-	new Player(VECTOR3(0,0,0), 0);
+//	new Player(VECTOR3(0,0,0), 0);
 	new Stage();
 	new Camera();
 	new Pad();
-	Goblin* g = new Goblin(VECTOR3(0, 100, 300), 0);
-	std::vector<VECTOR3> points = {
-		VECTOR3(100,100,300),
-		VECTOR3(100,100,100),
-	};
-	g->SetRoute(points);
+	//Goblin* g = new Goblin(VECTOR3(0, 100, 300), 0);
+	//std::vector<VECTOR3> points = {
+	//	VECTOR3(100,100,300),
+	//	VECTOR3(100,100,100),
+	//};
+	//g->SetRoute(points);
 
-	new Goblin(VECTOR3(-200, 100, 300), 0);
-	new Golem(VECTOR3(200, 0, 300), 0);
+//	new Goblin(VECTOR3(-200, 100, 300), 0);
+//	new Golem(VECTOR3(200, 0, 300), 0);
 }
 
 PlayScene::~PlayScene()

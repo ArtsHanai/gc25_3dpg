@@ -7,4 +7,7 @@ public:
 	~Stage();
 	void Update() override;
 	bool FindGround(VECTOR3 high, VECTOR3 low, VECTOR3* hit);
+
+	// Stage.dat‚ð“Ç‚ñ‚Å”z’u‚·‚é
+	void ParamRead(int st);
 };
