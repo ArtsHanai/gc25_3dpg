@@ -81,6 +81,7 @@
     <ClCompile Include="Source\IEnemy.cpp">
       <Filter>PlayScene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StageObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Screen.h" />
@@ -177,6 +178,9 @@
       <Filter>PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="Source\IEnemy.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StageObj.h">
       <Filter>PlayScene</Filter>
     </ClInclude>
   </ItemGroup>

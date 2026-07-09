@@ -2,15 +2,19 @@
 #include "Player.h"
 #include "Goblin.h"
 #include "Golem.h"
+#include "StageObj.h"
 #include <fstream>
 #include <assert.h>
 
 Stage::Stage()
 {
-	hModel = MV1LoadModel("data/models/Stage/Stage00.mv1");
+	int stage = 0;
+	char fname[40];
+	sprintf_s<40>(fname, "data/models/Stage/Stage%02d.mv1", stage);
+	hModel = MV1LoadModel(fname);
 	MV1SetupCollInfo(hModel);
 
-	ParamRead(0);
+	ParamRead(stage);
 }
 
 Stage::~Stage()
@@ -64,7 +68,9 @@ void Stage::ParamRead(int st)
 		int objectNum; // オブジェクトの数
 		int object[8]; // オブジェクトの番号
 	};
-	std::ifstream ifs("data/models/Stage/Stage00.dat", std::ios::binary);
+	char fname[40];
+	sprintf_s<40>(fname, "data/models/Stage/Stage%02d.dat", st);
+	std::ifstream ifs(fname, std::ios::binary);
 	assert(ifs);
 	Header header;
 	ifs.read((char*)&header, sizeof(header));
@@ -84,6 +90,12 @@ void Stage::ParamRead(int st)
 			assert(false);
 			break;
 		}
+	}
+	// ObjectInfoを読んで、StageObjを作る
+	for (int i = 0; i < header.ObjectInfoNum; i++) {
+		ObjectInfo obj;
+		ifs.read((char*)&obj, sizeof(obj));
+		new StageObj(obj.id, obj.position, obj.rotation, obj.scale);
 	}
 	ifs.close();
 }
