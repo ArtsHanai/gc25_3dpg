@@ -14,11 +14,54 @@ Object3D::~Object3D()
 
 void Object3D::Draw()
 {
-	MATRIX mRotX = MGetRotX(transform.rotation.x);
-	MATRIX mRotY = MGetRotY(transform.rotation.y);
-	MATRIX mRotZ = MGetRotZ(transform.rotation.z);
+	MATRIX mRot = transform.rotation.Matrix();
 	MATRIX mTrans = MGetTranslate(transform.position);
-	MATRIX m = mRotZ * mRotX * mRotY * mTrans;
+	MATRIX m = mRot * mTrans;
 	MV1SetMatrix(hModel, m);
 	MV1DrawModel(hModel);
+}
+
+Rotation::Rotation()
+{
+	rot = MGetIdent();
+}
+
+Rotation::~Rotation()
+{
+}
+
+void Rotation::SetRot(float x, float y, float z)
+{
+	MATRIX rotX = MGetRotX(x);
+	MATRIX rotY = MGetRotY(y);
+	MATRIX rotZ = MGetRotZ(z);
+	rot = rotZ * rotX * rotY;
+}
+
+VECTOR3 Rotation::GetRot()
+{
+	return VECTOR3();
+}
+
+void Rotation::RotX(float x)
+{
+	MATRIX m = MGetRotX(x);
+	rot *= m;
+}
+
+void Rotation::RotY(float y)
+{
+	MATRIX m = MGetRotY(y);
+	rot *= m;
+}
+
+void Rotation::RotZ(float z)
+{
+	MATRIX m = MGetRotZ(z);
+	rot *= m;
+}
+
+void Rotation::RotAxis(VECTOR3 axis, float r)
+{
+	rot *= MGetRotAxis(axis, r);
 }
