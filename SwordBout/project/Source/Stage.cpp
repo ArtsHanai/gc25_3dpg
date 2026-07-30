@@ -35,6 +35,34 @@ bool Stage::FindGround(VECTOR3 high, VECTOR3 low, VECTOR3* hit)
 	return false;
 }
 
+VECTOR3 Stage::CollideCapsule(const VECTOR3& base, CapsuleCollider* cap)
+{
+	VECTOR3 ret = VECTOR3(0,0,0);
+	float maxVal = 0; // Å‰‚Í‚O
+
+	//“–‚½‚è”»’è
+	MV1_COLL_RESULT_POLY_DIM result =
+		MV1CollCheck_Capsule(hModel, -1, cap->pos1+base, cap->pos2+base, cap->rad);
+
+	for (int i = 0; i < result.HitNum; i++) {
+
+		if (result.Dim[i].Normal.y >= cosf(30.0f * DegToRad)) {
+			continue;
+		}
+		float len = Segment_Triangle_MinLength(cap->pos1+base,
+			cap->pos2+base, result.Dim[i].Position[0], result.Dim[i].Position[1], result.Dim[i].Position[2]);
+
+		VECTOR3 v = (VECTOR3)(result.Dim[i].Normal) * (cap->rad - len);
+		v.y = 0;
+		if (VSize(v) > maxVal) {
+			maxVal = VSize(v);
+			ret = v;
+		}
+ 	}
+	MV1CollResultPolyDimTerminate(result);
+	return ret;
+}
+
 void Stage::ParamRead(int st)
 {
 	struct Header {
@@ -99,4 +127,3 @@ void Stage::ParamRead(int st)
 	}
 	ifs.close();
 }
-

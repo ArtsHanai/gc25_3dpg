@@ -25,26 +25,27 @@ void Camera::Update()
 	static const float DownLimit = -45.0f * DegToRad;
 	rot.x = min(rot.x, UpLimit);
 	rot.x = max(rot.x, DownLimit);
-}
 
-void Camera::Draw()
-{
 	Player* p = FindGameObject<Player>();
 	VECTOR3 playerPos = p->GetTransform().position;
-	VECTOR3 center = playerPos + VECTOR3(0,150,0);
+	VECTOR3 center = playerPos + VECTOR3(0, 150, 0);
 	MATRIX mat = MGetRotX(transform.rotation.x)
-				* MGetRotY(transform.rotation.y);
+		* MGetRotY(transform.rotation.y);
 	VECTOR3 camPos = VECTOR3(0, 0, -330) * mat + center;
 
 	Stage* st = FindGameObject<Stage>();
 	VECTOR3 hitPos;
-	if (st->FindGround( center, camPos, &hitPos)) {
+	if (st->FindGround(center, camPos, &hitPos)) {
 		camPos = hitPos;
 	}
 
 	if (CheckHitKey(KEY_INPUT_P)) {
-		SetCameraPositionAndTarget_UpVecY(camPos+VECTOR3(0,6000,0), playerPos + VECTOR3(0, 200, 0));
+		SetCameraPositionAndTarget_UpVecY(camPos + VECTOR3(0, 6000, 0), playerPos + VECTOR3(0, 200, 0));
 	} else {
 		SetCameraPositionAndTarget_UpVecY(camPos, playerPos + VECTOR3(0, 200, 0));
 	}
+}
+
+void Camera::Draw()
+{
 }

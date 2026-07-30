@@ -81,7 +81,12 @@
     <ClCompile Include="Source\IEnemy.cpp">
       <Filter>PlayScene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StageObj.cpp" />
+    <ClCompile Include="Source\Light.cpp" />
+    <ClCompile Include="Source\Shadow.cpp" />
+    <ClCompile Include="Source\Actor.cpp" />
+    <ClCompile Include="Source\StageObj.cpp">
+      <Filter>PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Screen.h" />
@@ -181,6 +186,12 @@
       <Filter>PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="Source\StageObj.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shadow.h">
       <Filter>PlayScene</Filter>
     </ClInclude>
   </ItemGroup>

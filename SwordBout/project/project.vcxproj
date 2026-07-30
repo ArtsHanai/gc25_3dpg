@@ -160,6 +160,7 @@
     <ClInclude Include="Source\Golem.h" />
     <ClInclude Include="Source\IEnemy.h" />
     <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\myDxLib.h" />
     <ClInclude Include="Source\Object3D.h" />
     <ClInclude Include="Source\Pad.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Source\Screen.h" />
     <ClInclude Include="Source\PlayScene.h" />
     <ClInclude Include="Source\SceneFactory.h" />
+    <ClInclude Include="Source\Shadow.h" />
     <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\StageObj.h" />
     <ClInclude Include="Source\TitleScene.h" />
@@ -185,6 +187,7 @@
     <ClCompile Include="Library\ObjectManager.cpp" />
     <ClCompile Include="Library\SceneManager.cpp" />
     <ClCompile Include="Library\Time.cpp" />
+    <ClCompile Include="Source\Actor.cpp" />
     <ClCompile Include="Source\Animator.cpp" />
     <ClCompile Include="Source\Axis.cpp" />
     <ClCompile Include="Source\BootScene.cpp" />
@@ -193,11 +196,13 @@
     <ClCompile Include="Source\Golem.cpp" />
     <ClCompile Include="Source\IEnemy.cpp" />
     <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\Object3D.cpp" />
     <ClCompile Include="Source\Pad.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayScene.cpp" />
     <ClCompile Include="Source\SceneFactory.cpp" />
+    <ClCompile Include="Source\Shadow.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
     <ClCompile Include="Source\StageObj.cpp" />
     <ClCompile Include="Source\TitleScene.cpp" />

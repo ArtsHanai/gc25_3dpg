@@ -2,12 +2,14 @@
 #include "GameObject.h"
 #include <algorithm>
 #include <assert.h>
+#include "../Source/Shadow.h"
 
 namespace
 {
 	std::list<GameObject*>* objects;
 	bool needSortDraw;
 	GameObject* running;
+	Shadow* shadow;
 };
 
 void ObjectManager::Init()
@@ -16,6 +18,7 @@ void ObjectManager::Init()
 	objects->clear();
 	needSortDraw = false;
 	running = nullptr;
+	shadow = new Shadow();
 }
 
 void ObjectManager::Update()
@@ -57,12 +60,21 @@ void ObjectManager::Draw()
 		objects->sort([](GameObject* a, GameObject* b) {return a->GetDrawOrder() > b->GetDrawOrder(); });
 		needSortDraw = false;
 	}
+	shadow->Make();
+	for (GameObject* obj : *objects)
+	{
+		if (obj == nullptr || obj->DestroyRequested())
+			continue;
+		obj->DrawShadow();
+	}
+	shadow->Use();
 	for (GameObject* obj : *objects)
 	{
 		if (obj == nullptr || obj->DestroyRequested())
 			continue;
 		obj->Draw();
 	}
+	shadow->End();
 }
 
 void ObjectManager::Release()

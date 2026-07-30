@@ -7,12 +7,14 @@
 #include "Pad.h"
 #include "Goblin.h"
 #include "Golem.h"
+#include "Light.h"
 
 PlayScene::PlayScene()
 {
 //	new Player(VECTOR3(0,0,0), 0);
 	new Stage();
 	new Camera();
+	new Light();
 	new Pad();
 	//Goblin* g = new Goblin(VECTOR3(0, 100, 300), 0);
 	//std::vector<VECTOR3> points = {

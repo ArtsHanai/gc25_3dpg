@@ -22,10 +22,19 @@ Player::Player(VECTOR3 pos, float rotY) : Actor(pos, rotY)
 	hWeapon = MV1LoadModel("data/models/Character/Weapon/Sabel/Sabel.mv1");
 
 	state = State::sNormal;
+
+	if (capsule != nullptr) {
+		delete capsule;
+	}
+	capsule = new CapsuleCollider(VECTOR3(0,0,0), VECTOR3(0,180,0), 50);
 }
 
 Player::~Player()
 {
+	if (capsule != nullptr) {
+		delete capsule;
+		capsule = nullptr;
+	}
 	delete anim;
 	anim = nullptr;
 }
@@ -41,6 +50,7 @@ void Player::Update()
 	case sDamage:  UpdateDamage();  break;
 	default: assert(false);
 	}
+	CollideStage();
 	// ínñ Ç…ê⁄ín
 	Stage* st = FindGameObject<Stage>();
 	VECTOR3 hitPos;

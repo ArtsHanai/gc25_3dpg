@@ -29,6 +29,7 @@ public:
 	/// 毎フレームの描画処理のために呼ばれます
 	/// </summary>
 	virtual void Draw() {}
+	virtual void DrawShadow() {Draw();}
 
 	/// <summary>
 	/// 自分のインスタンスを削除する時に呼び出してください
