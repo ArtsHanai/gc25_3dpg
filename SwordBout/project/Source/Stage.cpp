@@ -60,6 +60,16 @@ VECTOR3 Stage::CollideCapsule(const VECTOR3& base, CapsuleCollider* cap)
 		}
  	}
 	MV1CollResultPolyDimTerminate(result);
+
+	// ‘S•”‚ÌStageObj‚Æ“–‚½‚è”»’è‚ğ‚µ‚ÄAˆê”Ô’·‚¢‚à‚Ì‚ğret‚É“ü‚ê‚é
+	std::list<StageObj*> objs = FindGameObjects<StageObj>();
+	for (StageObj* ob : objs) {
+		VECTOR v = ob->CollideCapsule(base, cap);
+		if (VSize(v) > maxVal) {
+			maxVal = VSize(v);
+			ret = v;
+		}
+	}
 	return ret;
 }
 
